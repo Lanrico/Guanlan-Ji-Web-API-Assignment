@@ -15,11 +15,10 @@ export default function MovieReviews({ movie }) {
 
   useEffect(() => {
     getMovieReviews(movie.id).then((reviews) => {
-      setReviews(reviews);
+      setReviews(reviews.results);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return (
     <TableContainer component={Paper}>
       <Table sx={{minWidth: 550}} aria-label="reviews table">

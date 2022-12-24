@@ -5,6 +5,8 @@ import genresRouter from './api/genres';
 import './db';
 import './seedData'
 import usersRouter from './api/users';
+import peopleRouter from './api/people';
+import trendingRouter from './api/trending';
 import session from 'express-session';
 import passport from './authenticate';
 
@@ -27,6 +29,8 @@ app.use(passport.initialize());
 app.use('/api/movies', moviesRouter);
 app.use('/api/genres', genresRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/people', peopleRouter);
+app.use('/api/trending', trendingRouter);
 app.use(errHandler);
 app.listen(port, () => {
   console.info(`Server running at ${port}`);

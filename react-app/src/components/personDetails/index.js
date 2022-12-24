@@ -11,7 +11,7 @@ const MovieCard = lazy(() => import("../movieCard"));
 const PeopleDetails = ({ person }) => {
   const [movieCardPage, setMovieCardPage] = useState(1);
   const { data, error, isLoading, isError } = useQuery(
-    ["creditsMovies", { id: person.id }],
+    ["creditsMovies", person.id ],
     getPersonMovieCredits
   );
 

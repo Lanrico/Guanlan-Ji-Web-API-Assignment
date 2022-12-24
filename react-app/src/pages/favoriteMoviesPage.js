@@ -13,12 +13,11 @@ const FavoriteMoviesPage = () => {
   const { pagination } = useParams();
 
   const {favorites: movieIds } = useContext(MoviesContext);
-
   // Create an array of queries and run in parallel.
   const favoriteMovieQueries = useQueries(
     movieIds.map((movieId) => {
       return {
-        queryKey: ["movie", { id: movieId }],
+        queryKey: ["movie", movieId],
         queryFn: getMovie,
       };
     })

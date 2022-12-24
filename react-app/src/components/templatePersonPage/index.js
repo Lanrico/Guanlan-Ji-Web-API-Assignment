@@ -16,7 +16,7 @@ import MediaButton from "../mediaButtons";
 
 const TemplatePersonPage = ({ person, children }) => {
   const { data, error, isLoading, isError } = useQuery(
-    ["images", { id: person.id }],
+    ["images", person.id],
     getPersonImages
   );
 

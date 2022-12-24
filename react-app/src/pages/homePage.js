@@ -14,6 +14,7 @@ const HomePage = (props) => {
     ["discover", pagination],
     getMovies
   );
+
   if (isLoading) {
     return <Spinner />
   }
@@ -21,6 +22,8 @@ const HomePage = (props) => {
   if (isError) {
     return <h1>{error.message}</h1>
   }  
+  // const data = await getMovies(pagination);
+  // console.log(data)
   const movies = data.results;
 
   // Redundant, but necessary to avoid app crashing.

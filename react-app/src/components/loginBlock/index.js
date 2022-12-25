@@ -18,6 +18,7 @@ import { Snackbar } from '@mui/material';
 import Alert from "@mui/material/Alert";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import SignUp from "../signUpBlock";
 
 const theme = createTheme();
 
@@ -25,6 +26,7 @@ export default function LoginBlock() {
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openFail, setOpenFail] = useState(false);
   const [login, setLogin] = useState(false);
+  const [signUp, setSignUp] = useState(false);
   const [userName, setUserName] = useState("");
   const firebaseConfig = {
     apiKey: "AIzaSyBuCt1AzgifZ98mO8IMvHe7fBqLUT1H5kw",
@@ -56,12 +58,36 @@ export default function LoginBlock() {
       });
     event.preventDefault();
   };
+  const handleSignUpSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
+    setOpenSuccess(true);
+    handleLogin();
+    handleNoSignUp();
+    setUserName(data.get('email'))
+  };
 
   const handleSuccessSnackClose = (event) => {
     setOpenSuccess(false);
   };
+  const handleSignUpButton = (event) => {
+    setSignUp(true);
+  }
+  const handleNoSignUp = (event) => {
+    setSignUp(false);
+  }
+  const handleLeaveSignUpButton = (event) => {
+    setSignUp(false);
+  }
   const handleLogout = (event) => {
     setLogin(false);
+  };
+  const handleLogin = (event) => {
+    setLogin(true);
   };
   const handleFailSnackClose = (event) => {
     setOpenFail(false);
@@ -77,108 +103,113 @@ export default function LoginBlock() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={openSuccess}
-        onClose={handleSuccessSnackClose}
-      >
-        <Alert
-          severity="success"
+      <div style={signUp ? { display: "none" } : null}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          open={openSuccess}
           onClose={handleSuccessSnackClose}
         >
-          <Typography variant="h5">
-            Login success
-          </Typography>
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={openFail}
-        onClose={handleFailSnackClose}
-      >
-        <Alert
-          severity="error"
+          <Alert
+            severity="success"
+            onClose={handleSuccessSnackClose}
+          >
+            <Typography variant="h5">
+              Login success
+            </Typography>
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          open={openFail}
           onClose={handleFailSnackClose}
         >
-          <Typography variant="h5">
-            Invalid email or password
-          </Typography>
-        </Alert>
-      </Snackbar>
-      <Container component="main" maxWidth="xs" sx={login ? { display: "none" } : null}>
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: purple[500], width: 75, height: 75 }}>
-            <LoginIcon fontSize='large' />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me for 30 days"
-            />
-            <ColorButton
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, bgcolor: purple[500] }}
-            >
-              Sign In
-            </ColorButton>
-            <Grid container>
-              <Grid item sx={{ justifyContent: 'center', margin: 'auto' }}>
-                <Link href='' variant="body2">
-                  {"Sign Up"}
-                </Link>
+          <Alert
+            severity="error"
+            onClose={handleFailSnackClose}
+          >
+            <Typography variant="h5">
+              Invalid email or password
+            </Typography>
+          </Alert>
+        </Snackbar>
+        <Container component="main" maxWidth="xs" sx={login ? { display: "none" } : null}>
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: purple[500], width: 75, height: 75 }}>
+              <LoginIcon fontSize='large' />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="emailLogin"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="passwordLogin"
+                autoComplete="current-password"
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me for 30 days"
+              />
+              <ColorButton
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2, bgcolor: purple[500] }}
+              >
+                Sign In
+              </ColorButton>
+              <Grid container>
+                <Grid item sx={{ justifyContent: 'center', margin: 'auto' }}>
+                  <Link onClick={handleSignUpButton} variant="body2" style={{ cursor: "pointer", color: purple[500] }}>
+                    {"Sign Up"}
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
-      </Container>
-      <Container sx={login ? null : { display: "none" }} >
-        <Typography textAlign={'center'} variant="h4" >
-          Welcome,
-          <br></br>
-          {userName}!
-        </Typography>
-        <ColorButton
-          fullWidth
-          onClick={handleLogout}
-          variant="contained"
-          sx={{ mt: 3, mb: 2, bgcolor: purple[500] }}
-        >
-          Logout
-        </ColorButton>
-      </Container>
+        </Container>
+        <Container sx={login ? null : { display: "none" }} >
+          <Typography textAlign={'center'} variant="h4" >
+            Welcome,
+            <br></br>
+            {userName}!
+          </Typography>
+          <ColorButton
+            fullWidth
+            onClick={handleLogout}
+            variant="contained"
+            sx={{ mt: 3, mb: 2, bgcolor: purple[500] }}
+          >
+            Logout
+          </ColorButton>
+        </Container>
+      </div>
+      <div style={signUp ? null : { display: "none" }}>
+        <SignUp action1={handleLeaveSignUpButton} action2={handleSignUpSubmit} />
+      </div>
     </ThemeProvider>
   );
 }

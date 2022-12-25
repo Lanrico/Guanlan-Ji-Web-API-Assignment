@@ -117,8 +117,9 @@ export default function SignUp({ action1, action2 }) {
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="readPolicies" color="primary" />}
+                  control={<Checkbox value="readPolicies" color="primary" name="readPolicies"/>}
                   label="I have read and agree to Terms and Conditions, Privacy Policy and Cookie Policy."
+                  name="readPolicies"
                 />
               </Grid>
             </Grid>

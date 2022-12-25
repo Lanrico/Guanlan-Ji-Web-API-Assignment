@@ -17,7 +17,7 @@ import { styled } from '@mui/material/styles';
 import { Snackbar } from '@mui/material';
 import Alert from "@mui/material/Alert";
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import SignUp from "../signUpBlock";
 
 const theme = createTheme();
@@ -25,6 +25,7 @@ const theme = createTheme();
 export default function LoginBlock() {
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openFail, setOpenFail] = useState(false);
+  const [failContent, setFailContent] = useState("");
   const [login, setLogin] = useState(false);
   const [signUp, setSignUp] = useState(false);
   const [userName, setUserName] = useState("");
@@ -54,6 +55,7 @@ export default function LoginBlock() {
         // ...
       })
       .catch((error) => {
+        setFailContent("Invalid email or password")
         setOpenFail(true);
       });
     event.preventDefault();
@@ -61,14 +63,29 @@ export default function LoginBlock() {
   const handleSignUpSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    setOpenSuccess(true);
-    handleLogin();
-    handleNoSignUp();
-    setUserName(data.get('email'))
+    console.log(data.get('readPolicies'))
+    if (data.get('reEnterPassword') !== data.get('password')) {
+      setFailContent("The passwords entered twice are not the same")
+      setOpenFail(true);
+    }
+    else if (data.get('readPolicies') === null){
+      setFailContent("Please agree our policies")
+      setOpenFail(true);
+    }
+    else {
+      createUserWithEmailAndPassword(auth, data.get('email'), data.get('password'))
+        .then((userCredential) => {
+          const user = userCredential.user;
+          setOpenSuccess(true);
+          handleLogin();
+          handleNoSignUp();
+          setUserName(user.email);
+        })
+        .catch((error) => {
+          setFailContent("Invalid email form or password less than 6 characters")
+          setOpenFail(true);
+        })
+    }
   };
 
   const handleSuccessSnackClose = (event) => {
@@ -128,7 +145,7 @@ export default function LoginBlock() {
             onClose={handleFailSnackClose}
           >
             <Typography variant="h5">
-              Invalid email or password
+              {failContent}
             </Typography>
           </Alert>
         </Snackbar>
@@ -208,6 +225,35 @@ export default function LoginBlock() {
         </Container>
       </div>
       <div style={signUp ? null : { display: "none" }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          open={openSuccess}
+          onClose={handleSuccessSnackClose}
+        >
+          <Alert
+            severity="success"
+            onClose={handleSuccessSnackClose}
+          >
+            <Typography variant="h5">
+              Sign up success
+            </Typography>
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          open={openFail}
+          onClose={handleFailSnackClose}
+        >
+          <Alert
+            severity="error"
+            onClose={handleFailSnackClose}
+          >
+            <Typography variant="h5">
+              {failContent}
+            </Typography>
+          </Alert>
+        </Snackbar>
+
         <SignUp action1={handleLeaveSignUpButton} action2={handleSignUpSubmit} />
       </div>
     </ThemeProvider>

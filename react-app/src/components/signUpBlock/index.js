@@ -16,7 +16,7 @@ import { purple } from '@mui/material/colors';
 import styled from '@emotion/styled';
 import { Alert, Snackbar } from '@mui/material';
 
-import { AuthContext } from "../authContext.js";
+import { AuthContext } from "../../contexts/authContext.js";
 
 const theme = createTheme();
 

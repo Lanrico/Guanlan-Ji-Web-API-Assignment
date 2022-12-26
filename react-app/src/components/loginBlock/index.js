@@ -19,7 +19,8 @@ import Alert from "@mui/material/Alert";
 // import { initializeApp } from "firebase/app";
 // import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import SignUp from "../signUpBlock";
-import { AuthContext } from "../authContext.js";
+import { AuthContext } from "../../contexts/authContext.js";
+import { MoviesContext } from "../../contexts/moviesContext.js"
 
 const theme = createTheme();
 
@@ -31,6 +32,7 @@ export default function LoginBlock() {
   const [signUp, setSignUp] = useState(false);
 
   const context = useContext(AuthContext);
+  const context1 = useContext(MoviesContext);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
@@ -50,6 +52,9 @@ export default function LoginBlock() {
       .then((response) => {
         if (response) {
           setOpenSuccess(true);
+          console.log(userName)
+          console.log(context1.favorites)
+          context1.setUserFavorites(userName);
         }
         else {
           setFailContent('Invalid user name or password')
@@ -60,6 +65,7 @@ export default function LoginBlock() {
   };
   const handleSignUpSubmit = (event) => {
     const data = new FormData(event.currentTarget);
+    console.log(context1.favorites)
     event.preventDefault();
     if (data.get('userSignUp') === "" || data.get('password') === ""){
       setFailContent("User name or password can't be empty")

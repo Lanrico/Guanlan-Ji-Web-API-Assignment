@@ -12,7 +12,7 @@ import { styled } from '@mui/material/styles';
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-import { AuthContext } from "../authContext.js";
+import { AuthContext } from "../../contexts/authContext.js";
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 

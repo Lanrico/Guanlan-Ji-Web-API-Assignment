@@ -1,7 +1,7 @@
 import { Typography, useTheme } from "@mui/material";
 import React, { useContext } from "react";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
-import { AuthContext } from '../authContext.js'
+import { AuthContext } from '../../contexts/authContext.js'
 import img from '../../images/Unauthenticate.webp'
 
 const ProtectedRoutes = () => {

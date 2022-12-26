@@ -16,11 +16,12 @@ import img from '../../images/film-poster-placeholder.png'
 import { Link } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import truncate from "lodash/truncate";
+import { AuthContext } from "../../contexts/authContext";
 
 export default function MovieCard({ movie, action, width }) {
+  const context = useContext(AuthContext);
   const { favorites } = useContext(MoviesContext);
   const { mustWatch } = useContext(MoviesContext);
-
   if (favorites.find((id) => id === movie.id)) {
     movie.favorite = true;
   } else {
@@ -37,7 +38,7 @@ export default function MovieCard({ movie, action, width }) {
     <Card sx={{ maxWidth: 345, width: width ? width : "auto", justifyContent: 'center', margin: '0 auto' }}>
       <CardHeader
         avatar={
-          movie.favorite ? (
+          movie.favorite && context.isAuthenticated ? (
             <Avatar sx={{ backgroundColor: 'red' }}>
               <FavoriteIcon />
             </Avatar>

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { getMovies } from "../api/tmdb-api";
 import PageTemplate from '../components/templateMovieListPage';
 import { useQuery } from 'react-query';
 import Spinner from '../components/spinner';
 import AddToFavoritesIcon from '../components/cardIcons/addToFavorites'
 import { useParams } from "react-router-dom";
+import { AuthContext } from "../contexts/authContext";
 
 const HomePage = (props) => {
+  const context = useContext(AuthContext);
 
   const { pagination } = useParams();
 
@@ -35,7 +37,7 @@ const HomePage = (props) => {
       title="Discover Movies"
       movies={movies}
       action={(movie) => {
-        return <AddToFavoritesIcon movie={movie} />
+        return context.isAuthenticated ?<AddToFavoritesIcon movie={movie} /> : null
       }}
       page=""
       pagination={pagination}

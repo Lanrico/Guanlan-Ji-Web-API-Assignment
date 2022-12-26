@@ -1,20 +1,31 @@
-import React, { useState } from "react";
-
+import React, { useContext, useState } from "react";
+import { addToUserFavourites, getUserFavourites, removeFromUserFavourites } from "../api/web-api";
+import { AuthContext } from "./authContext";
 export const MoviesContext = React.createContext(null);
 
 const MoviesContextProvider = (props) => {
+  const context = useContext(AuthContext);
   const [favorites, setFavorites] = useState( [] )
   const [myReviews, setMyReviews] = useState( {} ) 
   const [mustWatch, setMustWatch] = useState( [] ) 
+
+  const setUserFavorites = (username) => {
+    getUserFavourites(username).then((response) => {
+      if (response) setFavorites(response);
+    });
+  }
 
   const addToFavorites = (movie) => {
     let newFavorites = [];
     if (!favorites.includes(movie.id)){
       newFavorites = [...favorites, movie.id];
+      console.log(context.userName)
+      addToUserFavourites(context.userName, movie.id)
     }
     else{
       newFavorites = [...favorites];
     }
+
     setFavorites(newFavorites)
   };
 
@@ -37,7 +48,8 @@ const MoviesContextProvider = (props) => {
   const removeFromFavorites = (movie) => {
     setFavorites( favorites.filter(
       (mId) => mId !== movie.id
-    ) )
+    ))
+    removeFromUserFavourites(context.userName, movie.id)
   };
 
   return (
@@ -45,6 +57,7 @@ const MoviesContextProvider = (props) => {
       value={{
         favorites,
         mustWatch,
+        setUserFavorites,
         addToFavorites,
         removeFromFavorites,
         addToMustWatch,

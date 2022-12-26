@@ -13,7 +13,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import MoviesContextProvider from "./contexts/moviesContext";
 import AddMovieReviewPage from './pages/addMovieReviewPage';
 import PeoplePage from "./pages/peoplePage";
-import AuthProvider from "./components/authContext.js";
+import AuthProvider from "./contexts/authContext.js";
 import ProtectedRoutes from "./components/protectedRoutes";
 
 const queryClient = new QueryClient({

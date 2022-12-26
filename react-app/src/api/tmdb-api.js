@@ -44,7 +44,7 @@ export const getPeople = (page) => {
   return fetch(
     `/api/people/tmdb/popular/page${page.queryKey[1]}`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'get'
   }).then(res => {
@@ -72,7 +72,7 @@ export const getUpcomingMovies = (page) => {
   return fetch(
     `/api/movies/tmdb/upcoming/page${page.queryKey[1]}`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'get'
   }).then(res => {
@@ -132,7 +132,7 @@ export const getMovie = (id) => {
   return fetch(
     `/api/movies/tmdb/movie/${id.queryKey[1]}`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'get'
   }).then(res => {
@@ -162,7 +162,7 @@ export const getPerson = (id) => {
   return fetch(
     `/api/people/tmdb/person/${id.queryKey[1]}`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'get'
   }).then(res => {
@@ -223,7 +223,7 @@ export const getMovieImages = (id) => {
   return fetch(
     `/api/movies/tmdb/movie/${id.queryKey[1]}/images`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'get'
   }).then(res => {
@@ -254,7 +254,7 @@ export const getPersonImages = (id) => {
   return fetch(
     `/api/people/tmdb/person/${id.queryKey[1]}/images`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'get'
   }).then(res => {
@@ -285,7 +285,7 @@ export const getPersonMovieCredits = (id) => {
   return fetch(
     `/api/people/tmdb/person/${id.queryKey[1]}/movie_credits`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'get'
   }).then(res => {
@@ -316,7 +316,7 @@ export const getPersonExternalIds = (id) => {
   return fetch(
     `/api/people/tmdb/person/${id.queryKey[1]}/external_ids`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'get'
   }).then(res => {
@@ -340,7 +340,7 @@ export const getMovieReviews = (id) => {
   return fetch(
     `/api/movies/tmdb/movie/${id}/reviews`, {
     headers: {
-      'Content-Type': 'application/json'
+      'Authorization': window.localStorage.getItem('token')
     },
     method: 'get'
   }).then(res => {

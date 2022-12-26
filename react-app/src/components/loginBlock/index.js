@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,9 +16,10 @@ import { purple } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 import { Snackbar } from '@mui/material';
 import Alert from "@mui/material/Alert";
-import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+// import { initializeApp } from "firebase/app";
+// import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import SignUp from "../signUpBlock";
+import { AuthContext } from "../authContext.js";
 
 const theme = createTheme();
 
@@ -28,63 +29,64 @@ export default function LoginBlock() {
   const [failContent, setFailContent] = useState("");
   const [login, setLogin] = useState(false);
   const [signUp, setSignUp] = useState(false);
+
+  const context = useContext(AuthContext);
   const [userName, setUserName] = useState("");
-  const firebaseConfig = {
-    apiKey: "AIzaSyBuCt1AzgifZ98mO8IMvHe7fBqLUT1H5kw",
-    authDomain: "movies-guanlan-ji.firebaseapp.com",
-    projectId: "movies-guanlan-ji",
-    storageBucket: "movies-guanlan-ji.appspot.com",
-    messagingSenderId: "1080962489218",
-    appId: "1:1080962489218:web:5e6e9e8218312990338d9b",
-    measurementId: "G-QFTQJVEKHT"
+  const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
+  const [readPolicies, setReadPolicies] = useState("");
+
+  const loginAuth = async () => {
+    return(context.authenticate(userName, password));
   };
 
+  const register = async () => {
+    var i = context.register(userName, password);
+    return i;
+  }
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
   const handleSubmit = (event) => {
-    const data = new FormData(event.currentTarget);
-    signInWithEmailAndPassword(auth, data.get('email'), data.get('password'))
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        console.log(user)
-        setOpenSuccess(true);
-        setLogin(true);
-        setUserName(user.email);
-        // ...
+    loginAuth(userName, password)
+      .then((response) => {
+        if (response) {
+          setOpenSuccess(true);
+        }
+        else {
+          setFailContent('Invalid user name or password')
+          setOpenFail(true);
+        }
       })
-      .catch((error) => {
-        setFailContent("Invalid email or password")
-        setOpenFail(true);
-      });
     event.preventDefault();
   };
   const handleSignUpSubmit = (event) => {
-    event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(data.get('readPolicies'))
-    if (data.get('reEnterPassword') !== data.get('password')) {
+    event.preventDefault();
+    if (data.get('userSignUp') === "" || data.get('password') === ""){
+      setFailContent("User name or password can't be empty")
+      setOpenFail(true);
+    }
+    else if (data.get('reEnterPassword') !== data.get('password')) {
       setFailContent("The passwords entered twice are not the same")
       setOpenFail(true);
     }
-    else if (data.get('readPolicies') === null){
+    else if (data.get('readPolicies') === null) {
       setFailContent("Please agree our policies")
       setOpenFail(true);
     }
     else {
-      createUserWithEmailAndPassword(auth, data.get('email'), data.get('password'))
-        .then((userCredential) => {
-          const user = userCredential.user;
-          setOpenSuccess(true);
-          handleLogin();
-          handleNoSignUp();
-          setUserName(user.email);
-        })
-        .catch((error) => {
-          setFailContent("Invalid email form or password less than 6 characters")
-          setOpenFail(true);
-        })
+      register()
+        .then((response) => {
+          console.log(response)
+          if (response === true) {
+            loginAuth(userName, password);
+            setOpenSuccess(true);
+            setSignUp(false);
+          }
+          else {
+            setFailContent('The user name is already exist or your password is invalid.')
+            setOpenFail(true);
+          }
+      })
     }
   };
 
@@ -101,6 +103,7 @@ export default function LoginBlock() {
     setSignUp(false);
   }
   const handleLogout = (event) => {
+    context.signout();
     setLogin(false);
   };
   const handleLogin = (event) => {
@@ -125,6 +128,7 @@ export default function LoginBlock() {
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
           open={openSuccess}
           onClose={handleSuccessSnackClose}
+          style={context.isAuthenticated && openSuccess? null : { display: "none" }}
         >
           <Alert
             severity="success"
@@ -139,6 +143,8 @@ export default function LoginBlock() {
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
           open={openFail}
           onClose={handleFailSnackClose}
+          style={context.isAuthenticated || !openFail? { display: "none" } : null}
+
         >
           <Alert
             severity="error"
@@ -149,7 +155,7 @@ export default function LoginBlock() {
             </Typography>
           </Alert>
         </Snackbar>
-        <Container component="main" maxWidth="xs" sx={login ? { display: "none" } : null}>
+        <Container component="main" maxWidth="xs" sx={ context.isAuthenticated ? { display: "none" } : null}>
           <CssBaseline />
           <Box
             sx={{
@@ -170,11 +176,11 @@ export default function LoginBlock() {
                 margin="normal"
                 required
                 fullWidth
-                id="emailLogin"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="userLogin"
+                label="User Name"
+                name="user"
                 autoFocus
+                onChange={e => {setUserName(e.target.value)}}
               />
               <TextField
                 margin="normal"
@@ -185,6 +191,7 @@ export default function LoginBlock() {
                 type="password"
                 id="passwordLogin"
                 autoComplete="current-password"
+                onChange={e => {setPassword(e.target.value)}}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -208,11 +215,11 @@ export default function LoginBlock() {
             </Box>
           </Box>
         </Container>
-        <Container sx={login ? null : { display: "none" }} >
+        <Container sx={context.isAuthenticated ? null : { display: "none" }} >
           <Typography textAlign={'center'} variant="h4" >
             Welcome,
             <br></br>
-            {userName}!
+            {context.userName}!
           </Typography>
           <ColorButton
             fullWidth
@@ -224,11 +231,12 @@ export default function LoginBlock() {
           </ColorButton>
         </Container>
       </div>
-      <div style={signUp ? null : { display: "none" }}>
+      <div style={!context.isAuthenticated && signUp ? null : { display: "none" }}>
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
           open={openSuccess}
           onClose={handleSuccessSnackClose}
+          style={context.isAuthenticated && openSuccess? null : { display: "none" }}
         >
           <Alert
             severity="success"
@@ -243,6 +251,7 @@ export default function LoginBlock() {
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
           open={openFail}
           onClose={handleFailSnackClose}
+          style={context.isAuthenticated || !openFail? { display: "none" } : null}
         >
           <Alert
             severity="error"
@@ -254,7 +263,7 @@ export default function LoginBlock() {
           </Alert>
         </Snackbar>
 
-        <SignUp action1={handleLeaveSignUpButton} action2={handleSignUpSubmit} />
+        <SignUp action1={handleLeaveSignUpButton} action2={handleSignUpSubmit} action3={setUserName} action4={setPassword} action5={setRePassword} action6={setReadPolicies}/>
       </div>
     </ThemeProvider>
   );

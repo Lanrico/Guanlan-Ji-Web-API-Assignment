@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import moviesRouter from './api/movies';
+import moviesAuthenticateRouter from './api/movies/tmdb';
 import genresRouter from './api/genres';
 import './db';
 import './seedData'
@@ -27,9 +28,10 @@ app.use(express.json());
 app.use(passport.initialize());
 // app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
 app.use('/api/movies', moviesRouter);
+app.use('/api/movies/tmdb', passport.authenticate('jwt', {session: false}), moviesAuthenticateRouter);
 app.use('/api/genres', genresRouter);
 app.use('/api/users', usersRouter);
-app.use('/api/people', peopleRouter);
+app.use('/api/people', passport.authenticate('jwt', {session: false}), peopleRouter);
 app.use('/api/trending', trendingRouter);
 app.use(errHandler);
 app.listen(port, () => {

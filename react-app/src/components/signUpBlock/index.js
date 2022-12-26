@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,11 +16,15 @@ import { purple } from '@mui/material/colors';
 import styled from '@emotion/styled';
 import { Alert, Snackbar } from '@mui/material';
 
+import { AuthContext } from "../authContext.js";
+
 const theme = createTheme();
 
-export default function SignUp({ action1, action2 }) {
+export default function SignUp({ action1, action2, action3, action4, action5, action6 }) {
   const [openSuccess, setOpenSuccess] = useState(false);
   const [openFail, setOpenFail] = useState(false);
+  const context = useContext(AuthContext);
+
   const handleFailSnackClose = (event) => {
     setOpenFail(false);
   };
@@ -38,34 +42,6 @@ export default function SignUp({ action1, action2 }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={openSuccess}
-        onClose={handleSuccessSnackClose}
-      >
-        <Alert
-          severity="success"
-          onClose={handleSuccessSnackClose}
-        >
-          <Typography variant="h5">
-            Sign up success
-          </Typography>
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={openFail}
-        onClose={handleFailSnackClose}
-      >
-        <Alert
-          severity="error"
-          onClose={handleFailSnackClose}
-        >
-          <Typography variant="h5">
-            Invalid information
-          </Typography>
-        </Alert>
-      </Snackbar>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -88,10 +64,10 @@ export default function SignUp({ action1, action2 }) {
                 <TextField
                   required
                   fullWidth
-                  id="emailSignUp"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id="userSignUp"
+                  label="User Name"
+                  name="userSignUp"
+                  onChange={e => {action3(e.target.value)}}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -103,6 +79,7 @@ export default function SignUp({ action1, action2 }) {
                   type="password"
                   id="passwordSignUp"
                   autoComplete="new-password"
+                  onChange={e => {action4(e.target.value)}}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -113,11 +90,12 @@ export default function SignUp({ action1, action2 }) {
                   label="Enter password again"
                   type="password"
                   id="rePasswordSignUp"
+                  onChange={e => {action5(e.target.value)}}
                 />
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="readPolicies" color="primary" name="readPolicies"/>}
+                  control={<Checkbox value="readPolicies" color="primary" name="readPolicies" onChange={e => {action6(e.target.value)}}                  />}
                   label="I have read and agree to Terms and Conditions, Privacy Policy and Cookie Policy."
                   name="readPolicies"
                 />

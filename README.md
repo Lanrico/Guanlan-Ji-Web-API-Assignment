@@ -18,7 +18,7 @@ Student number: 20099881
 
 ## Setup requirements.
 
-[ Outline any non-standard setup steps necessary to run your app locally after cloning the repo.]
+No setup requirements
 
 ## API Configuration
 
@@ -41,9 +41,9 @@ The API design is on the Swaggerhub where you can find a complete API documentat
 
 ## Security and Authentication
 
- + In web-api
+ In web-api
  - '/api/movies/tmdb' and '/api/people' are protected by passport/sessions.
- + In React
+ In React
  - The routes below are all protected
     /reviews/:id
     /movies/favorites/page:pagination
@@ -54,8 +54,7 @@ The API design is on the Swaggerhub where you can find a complete API documentat
     /reviews/form
 ## Integrating with React App
 
-The React app is almost fully integrated with the Web API.
-views use Web instead of TMDB API:
+Views use Web instead of TMDB API:
 + /users | POST | Login and register in the homepage, and related to the protected routes
 + /users/:username/favourites | GET | The favourite page shows the movies get from this api
 + /users/:username/favourites | POST | The addToFavourite button in the movie card post a movie to this api

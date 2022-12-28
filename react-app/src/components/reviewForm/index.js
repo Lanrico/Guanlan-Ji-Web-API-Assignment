@@ -9,6 +9,7 @@ import { useForm, Controller } from "react-hook-form";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/authContext.js";
 
 const ratings = [
   {
@@ -65,6 +66,7 @@ const ReviewForm = ({ movie }) => {
   const context = useContext(MoviesContext);
   const [open, setOpen] = useState(false); 
   const navigate = useNavigate();
+  const context1 = useContext(AuthContext);
 
   const defaultValues = {
     author: "",
@@ -124,7 +126,7 @@ const ReviewForm = ({ movie }) => {
           name="author"
           control={control}
           rules={{ required: "Name is required" }}
-          defaultValue=""
+          defaultValue={context1.userName}
           render={({ field: { onChange, value } }) => (
             <TextField
               sx={{ width: "40ch" }}

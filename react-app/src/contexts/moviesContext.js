@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { addToUserFavourites, getUserFavourites, removeFromUserFavourites } from "../api/web-api";
+import { addMovieReview, addToUserFavourites, getUserFavourites, removeFromUserFavourites } from "../api/web-api";
 import { AuthContext } from "./authContext";
 export const MoviesContext = React.createContext(null);
 
@@ -40,7 +40,7 @@ const MoviesContextProvider = (props) => {
     setMustWatch(newMustWatch)
   };
 
-  const addReview = (movie, review) => {
+  const addReview = (movie, author, review) => {
     setMyReviews( {...myReviews, [movie.id]: review } )
   };
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import { genres } from './moviesData';
+import { genres } from './genresData';
 import Genre from './genreModel';
 import uniqid from 'uniqid'
 import { getGenres } from '../tmdb-api';

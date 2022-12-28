@@ -6,6 +6,7 @@ import asyncHandler from 'express-async-handler';
 import { getUpcomingMovies, getMovies, getMovie, getMovieImages, getMovieReviews } from '../tmdb-api';
 
 const router = express.Router();
+const movieIdReg = /^[0-9]+.?[0-9]*$/;
 
 router.get('/', asyncHandler(async (req, res) => {
     const movies = await movieModel.find();
@@ -16,6 +17,9 @@ router.get('/', asyncHandler(async (req, res) => {
 router.get('/:id', asyncHandler(async (req, res) => {
     const id = parseInt(req.params.id);
     const movie = await movieModel.findByMovieDBId(id);
+    if (!movieIdReg.test(id)) {
+        res.status(403).json({ message: 'Invalid movie id.', status_code: 403 });
+    }
     if (movie) {
         res.status(200).json(movie);
     } else {

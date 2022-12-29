@@ -50,6 +50,7 @@ The API design is on the Swaggerhub where you can find a complete API documentat
     /movies/:id
     /people/:id
     /movies/upcoming/page:pagination
+    /movies/recommend
     /people/page:pagination
     /reviews/form
 ## Integrating with React App
@@ -59,6 +60,7 @@ Views use Web instead of TMDB API:
 + /users/:username/favourites | GET | The favourite page shows the movies get from this api
 + /users/:username/favourites | POST | The addToFavourite button in the movie card post a movie to this api
 + /users/:username/favourites/remove | POST | The removeFromFavourte button in the movie card post a movie to this api to remove the movie
++ /users/:username/recommendation | GET | The recommend page use the movie list return from this api
 + /genres/tmdb/genres | GET | In each page's filtercard
 + /movies/tmdb/discover/page:page | GET | The home page movie list
 + /movies/tmdb/upcoming/page:page | GET | The upcoming page movie list
@@ -77,10 +79,12 @@ Updates of the React App:
 + The movies in favourites will have a red heart just after a user login, and disappear just after the user logout.
 + Of course when a user haven't sign in, he can't see the addToFavourite button in the movie card 
 + A more complete sign up and sign in function, the error message is different due to different types of invalid input
++ A real-time response recommand page, its movie list is caculated by a simple algorithm using the users favourites.
 
 ## Independent learning (if relevant)
 
 The API "/users/{id}/recommendation " implements a simple recommender, the flow of algorithm of it is as follows:
 1. Get the movie list of the user's favourites, and extract the genres of them.
 2. Count the number of the occurrence of each genre, then find the maximum one's genre id.
-3. Use the genre id to query movies and get the result.
+3. Use the genre id to query movies and get the result from the top 20 trending movies.
+In this way the user can get recommend movie by his favourites and the trending movies

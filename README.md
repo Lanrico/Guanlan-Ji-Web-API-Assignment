@@ -11,7 +11,7 @@ Student number: 20099881
  + New Nested Document in MongoDB.
  + Advanced authentication with rich functions.
  + New protected routes.
- + New express middleware such as error handling.
+ + New express middleware such as error handling and complete error log for each api.
  + New validation using regular expressions.
  + Complete Swagger API documentation.
  + Simple recommend algorithm to implement a recommender.

@@ -37,7 +37,7 @@ No setup requirements
 
 The API design is on the Swaggerhub where you can find a complete API documentation
 
-[Swaggerhub](https://app.swaggerhub.com/apis-docs/Lanrico/Web-API-CA/1.0.0#/))
+[Swaggerhub](https://app.swaggerhub.com/apis-docs/Lanrico/Web-API-CA/1.0.0#/)
 
 ## Security and Authentication
 

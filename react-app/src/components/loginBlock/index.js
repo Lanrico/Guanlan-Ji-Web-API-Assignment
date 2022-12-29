@@ -52,8 +52,6 @@ export default function LoginBlock() {
       .then((response) => {
         if (response) {
           setOpenSuccess(true);
-          console.log(userName)
-          console.log(context1.favorites)
           context1.setUserFavorites(userName);
         }
         else {
@@ -65,7 +63,6 @@ export default function LoginBlock() {
   };
   const handleSignUpSubmit = (event) => {
     const data = new FormData(event.currentTarget);
-    console.log(context1.favorites)
     event.preventDefault();
     if (data.get('userSignUp') === "" || data.get('password') === ""){
       setFailContent("User name or password can't be empty")
@@ -82,7 +79,6 @@ export default function LoginBlock() {
     else {
       register()
         .then((response) => {
-          console.log(response)
           if (response === true) {
             loginAuth(userName, password);
             setOpenSuccess(true);

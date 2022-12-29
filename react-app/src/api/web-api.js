@@ -27,8 +27,16 @@ export const getUserFavourites = (username) => {
     }).then(res => res.json())
 };
 
+export const getUserRecommend = (username) => {
+    return fetch(`/api/users/${username}/recommendation`, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'get',
+    }).then(res => res.json())
+};
+
 export const addToUserFavourites = (username, id) => {
-    console.log(id)
     return fetch(`/api/users/${username}/favourites`, {
         headers: {
             'Content-Type': 'application/json'
@@ -39,14 +47,15 @@ export const addToUserFavourites = (username, id) => {
 };
 
 export const removeFromUserFavourites = (username, id) => {
-    console.log(id)
     return fetch(`/api/users/${username}/favourites/remove`, {
         headers: {
             'Content-Type': 'application/json'
         },
         method: 'post',
         body: JSON.stringify({ id: id })
-    }).then(res => res.json())
+    }).then(res => {
+        return res.json()
+    })
 };
 
 export const addMovieReview = (movieId, author, content) => {

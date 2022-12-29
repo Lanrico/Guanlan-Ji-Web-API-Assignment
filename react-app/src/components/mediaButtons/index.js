@@ -7,7 +7,6 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 
 export default function MediaButton(person) {
-  console.log(person)
   const { data, error, isLoading, isError } = useQuery(
     ["externalId", person.person.id ],
     getPersonExternalIds

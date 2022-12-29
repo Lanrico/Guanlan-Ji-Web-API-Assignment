@@ -19,7 +19,6 @@ const MoviesContextProvider = (props) => {
     let newFavorites = [];
     if (!favorites.includes(movie.id)){
       newFavorites = [...favorites, movie.id];
-      console.log(context.userName)
       addToUserFavourites(context.userName, movie.id)
     }
     else{

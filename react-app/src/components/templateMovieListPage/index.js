@@ -75,7 +75,7 @@ function MovieListPageTemplate({ movies, title, action, page, total_pages, pagin
           )}
         />
       ) : (
-        <Pagination count={total_pages > 500 ? 500 : total_pages} color="primary" variant="outlined" shape="rounded" size="large" showFirstButton showLastButton page={parseInt(pagination)} sx={{ justifyContent: 'center', margin: 'auto', marginTop: '20px' }}
+        <Pagination style={page === "/movies/recommand"? {display: "none"} : null} count={total_pages > 500 ? 500 : total_pages} color="primary" variant="outlined" shape="rounded" size="large" showFirstButton showLastButton page={parseInt(pagination)} sx={{ justifyContent: 'center', margin: 'auto', marginTop: '20px' }}
           renderItem={(item) => (
             <PaginationItem component={Link} to={`${page}/page${item.page}`} {...item} />
           )}

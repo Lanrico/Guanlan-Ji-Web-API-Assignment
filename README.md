@@ -73,7 +73,7 @@ Views use Web instead of TMDB API:
 + /people/tmdb/person/:id/external_ids | GET | The person detailed page
 
 Updates of the React App:
-+ When access a protect page, the page will show a warning information and a link to login
++ When access a protected page, the page will show a warning information and a link to login
 + The movies in favourites will have a red heart just after a user login, and disappear just after the user logout.
 + Of course when a user haven't sign in, he can't see the addToFavourite button in the movie card 
 + A more complete sign up and sign in function, the error message is different due to different types of invalid input

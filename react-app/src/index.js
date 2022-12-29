@@ -15,6 +15,7 @@ import AddMovieReviewPage from './pages/addMovieReviewPage';
 import PeoplePage from "./pages/peoplePage";
 import AuthProvider from "./contexts/authContext.js";
 import ProtectedRoutes from "./components/protectedRoutes";
+import RecommendMoviesPage from "./pages/recommendMoviesPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,6 +39,7 @@ const App = () => {
               <Route element={<ProtectedRoutes />}>
                 <Route path="/reviews/:id" element={<MovieReviewPage />} />
                 <Route path="/movies/favorites/page:pagination" element={<FavoriteMoviesPage />} />
+                <Route path="/movies/recommend" element={<RecommendMoviesPage />} />
                 <Route path="/movies/:id" element={<MoviePage />} />
                 <Route path="/people/:id" element={<PersonPage />} />
                 <Route path="/movies/upcoming/page:pagination" element={<UpcomingMoviesPage />} />
